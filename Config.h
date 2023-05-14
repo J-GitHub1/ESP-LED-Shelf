@@ -19,8 +19,8 @@
 //If commented out, default is true for 24hr format, false for 12hr format
 //#define DISPLAY_ZERO_IN_TENS_DIGIT true
 
-#define LIGHT_SENSOR  17 //A0
-#define DATAPIN       15 //15 = D8 on a NodeMCU
+#define LIGHT_SENSOR  17 //A0 I have not used do I don't know if this works
+#define DATAPIN    21    //15 = D8 on a NodeMCU
 //#define SPOTLIGHTPIN  4 //4 = D2 on a NodeMCU. Uncomment if you use a seperate pin for spotlights
 #define LED_TYPE      WS2812B
 #define COLOR_ORDER   GRB
@@ -65,13 +65,14 @@ extern byte FRAMES_PER_SECOND;  // here you can control the speed. With the Acce
 #ifdef _12_HR_CLOCK
   //-----The following wiring orders are 1-indexed-----//
   //Wiring order in the README (Only have one of these uncommented)
-  const int PROGMEM segmentWiringOrder[] = {-7,1,8,-14,20,27,-21,15,-9,-2,3,10,-16,22,-28,29,-23,17,-11,-4,5,12,-18,24,-30,31,-25,19,-13,-6,26,-32}; 
-  //Wiring order used by DIYMachines
+  const int PROGMEM segmentWiringOrder[] = {27,28,29,30,31,32,26,13,-6,-5,-4,-3,-2,-1,-7,-20,14,-21,-8,15,-22,-9,16,-23,-10,17,-24,-11,18,-25,-12,19}; 
+  //Wiring order used by DIYMachines        0  1   2  3  4  5  6  7  8  9 10 11 12 13 14 15  16 17 18  19 20 21 22  23  24 25  26  27  28  29 30 31
   //const int PROGMEM segmentWiringOrder[] = {-13,-6,12,19,26,-32,-25,-11,-4,10,17,24,-30,-23,-9,-2,8,15,22,-28,-21,7,20,1,3,5,14,16,18,27,29,31};
 
   //Wiring order in the README (Only have one of these uncommented)
-  const int PROGMEM spotlightWiringOrder[] = {0,1,2,3,4,5,11,10,9,8,7,6};
+  const int PROGMEM spotlightWiringOrder[] = {6,7,8,9,10,11,5,4,3,2,1,0};
   //Wiring order used by DIYMachines
+
   //const int PROGMEM spotlightWiringOrder[] = {5,4,3,2,1,0,6,7,8,9,10,11};
   //------------------------//
 
@@ -82,6 +83,7 @@ extern byte FRAMES_PER_SECOND;  // here you can control the speed. With the Acce
   const int PROGMEM m_ten[] = {3,9,10,16,22,23,29};
   const int PROGMEM h_one[] = {1,7,8,14,20,21,27};
   const int PROGMEM h_ten[] = {-1,-1,6,-1,-1,19,-1}; //-1 means undefined since 12hr doesnt have this segment
+
 #endif
 #ifdef _24_HR_CLOCK
   //1-indexed
@@ -139,7 +141,7 @@ _8    _9    10    11    12    13    14    15
   --0-  --1-  --2-  --3-  --4-  --5-  --6-  
 -7    -8    -9    10    11    12    13    14
   -15-  -16-  -17-  -18-  -19-  -20-  -21-  
-22    23    24    25    26    27    28    29
+22    23    24    25    26    27    28    29 
   -30-  -31-  -32-  -33-  -34-  -35-  -36-  
 */
 

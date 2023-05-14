@@ -2,11 +2,11 @@
 #include "NTPTime.h"
 #include "Lighting.h"
 #include "Secrets.h"
-
 #include <WiFiUdp.h>
 #include <NTPClient.h>
-#include <ESP8266WiFi.h>
-#include <ESP8266mDNS.h>
+#include <WiFi.h>
+#include <WebServer.h> //updated to ESP32 Library
+#include <ESPmDNS.h> //updated to ESP32 Library
 
 double utcOffset;
 
@@ -17,10 +17,10 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
 //IP config
-IPAddress ip(192,168,1,52);     //Device IP
-IPAddress gateway(192,168,1,1); //IP of router
+IPAddress ip(192,168,1,99);     //Device IP
+IPAddress gateway(192,168,1,254); //IP of router
 IPAddress subnet(255,255,255,0);
-IPAddress primaryDNS(8,8,8,8);
+IPAddress primaryDNS(192,168,1,2); // I use PIHOLE default is 8,8,8,8
 IPAddress secondaryDNS(8,8,4,4);
 
 void setupWiFi(){
@@ -37,16 +37,17 @@ void setupWiFi(){
     Serial.print(".");
   }
   Serial.println();
-  if(MDNS.begin(deviceName)){
-    Serial.print("mDNS set up. You can connect to "); 
-    Serial.print(deviceName) ;
-    Serial.println(".local to connect instead of the IP");
-  }else{
-    Serial.println("mDNS failed to setup. You must connect using the device IP.");
+     // Initialize MDNS Updated to ESP32
+  if (!MDNS.begin("esp32")) {
+    Serial.println("Error setting up MDNS responder!");
+    while(1) {
+      delay(1000);
+    }
   }
+
   solidSegments(CRGB::Black);
   solidSpotlights(CRGB::Black);
-  WiFi.setSleepMode(WIFI_NONE_SLEEP);
+  WiFi.setSleep(false);
   WiFi.setAutoReconnect(true);
   WiFi.persistent(true);
   
