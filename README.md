@@ -1,6 +1,7 @@
 # ESP32 LED Shelf
 
-An improved version of [this LED shelf by DIY Machines on Youtube](https://www.youtube.com/watch?v=8E0SeycTzHw) to include more features and settings. [Link to the original Github repo here](https://github.com/DIY-Machines/DigitalClockSmartShelving)
+
+An improved version of [this LED shelf by DIY Machines on Youtube](https://www.youtube.com/watch?v=8E0SeycTzHw) includes more features and settings. [Link to the original Github repo here](https://github.com/DIY-Machines/DigitalClockSmartShelving)
 
 # Gallery
 
@@ -58,6 +59,8 @@ You would need to have the following libraries installed:
 
 * FastLED
 * LittleFS
+
+You'll need to install the platformIO IDE, Arduino and Espressif IDF extensions before trying to build the project for the first time. 
 
 # Configuration
 
