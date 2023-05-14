@@ -1,4 +1,4 @@
-# ESP8266 LED Shelf
+# ESP32 LED Shelf
 
 An improved version of [this LED shelf by DIY Machines on Youtube](https://www.youtube.com/watch?v=8E0SeycTzHw) to include more features and settings. [Link to the original Github repo here](https://github.com/DIY-Machines/DigitalClockSmartShelving)
 
@@ -16,7 +16,7 @@ Rainbow clock with solid background and 1 pixel wide hyphen | Rainbow Everything
 
 # Improvements over the original
 
-* Used an ESP8266 instead of an Arduino Nano
+* Used an ESP32 instead of an Arduino Nano
 * Auto-update time from the internet (No need for a real-time clock or manual configuration aside from UTC offsets)
 * Created a webserver to control different settings:
   * Full mobile and desktop support!
@@ -121,7 +121,7 @@ LIGHT_SENSOR         | Should be connected to A0, since thats the only analog pi
 SPOTLIGHTPIN         | If following the original instructions, they use a seperate pin for the spotlights. If so, uncomment this line and set to the respective pin number
 LED_TYPE             | Should be WS2812B's in most cases
 COLOR_ORDER          | WS2812B's are GRB. If colors act weird or you are using other LED_TYPE's, you may need to switch to RGB
-NAME                 | Name of the ESP8266 device (used to connect or as an identifier so you know what device is which in the routers "device" page
+NAME                 | Name of the ESP32 device (used to connect or as an identifier so you know what device is which in the routers "device" page
 EEPROM_UPDATE_DELAY  | How many seconds to wait after a change before saving it to EEPROM. This is to reduce writes to EEPROM so we don't wear it out
 framesPerSecond      | Set to 30 by default; maximum FPS. Usually Gradient is the most intensive one at around 45fps at least for all effects
 AUTOBRIGHTNESS_DELAY | How many seconds to wait before getting another reading from the light sensor for auto brightness
@@ -153,7 +153,7 @@ deviceName | The domain in use for mDNS. Default is `ledshelf.local` for `device
 
 When the Wi-Fi module sends/recieves data, it flashes the first LED in the strip. I am unable to trace exactly where this is coming from, so I recommond having a sacrifical "Wi-Fi status" LED right before the strip. All you need to do is uncomment the `#define SACRIFICELED` line to enable. Otherwise, the flashing should be fairly infrequent except for NTP time updates and webserver actions.
 
-# Setting up the ESP8266
+# Setting up the ESP32
 
 Run this command if you have git installed. Otherwise just download the repo zip file in the top right and extract:
 
@@ -163,18 +163,18 @@ git clone https://github.com/Winston-Lu/LED-Clock
 
 1. Download and open the [Arduino IDE](https://www.arduino.cc/en/software)
 2. Go to "File" > "Preferences"
-3. Under "Additional Boards Manager URLs:", add `http://arduino.esp8266.com/stable/package_esp8266com_index.json`. If you have entries there already, add a comma to seperate them
+3. Under "Additional Boards Manager URLs:", add `http://arduino.ESP32.com/stable/package_ESP32com_index.json`. If you have entries there already, add a comma to seperate them
 4. Click OK and go to "Tools" > "Board" > "Board Manager"
-5. Look up "esp8266", then install the board
-6. Once it's installed, go to "Tools" > "Board" > "ESP8266 Boards" > "Generic ESP8266 Module". This will work for the NodeMCU v0.9 and NodeMCU v1.0.
+5. Look up "ESP32", then install the board
+6. Once it's installed, go to "Tools" > "Board" > "ESP32 Boards" > "Generic ESP32 Module". This will work for the NodeMCU v0.9 and NodeMCU v1.0.
 7. Change flash size to "4MB (FS: 1MB OTA ~1019MB)"
-8. Once you plugged in your ESP8266, select the COM port it is connected to. You can leave every other setting default
-9. Download the [LittleFS tool from this repository here](https://github.com/earlephilhower/arduino-esp8266littlefs-plugin/releases)
-10. Follow their installation instructions and under "Tools", you should see "ESP8266 LittleFS Data Upload"
+8. Once you plugged in your ESP32, select the COM port it is connected to. You can leave every other setting default
+9. Download the [LittleFS tool from this repository here](https://github.com/earlephilhower/arduino-ESP32littlefs-plugin/releases)
+10. Follow their installation instructions and under "Tools", you should see "ESP32 LittleFS Data Upload"
 11. Click on it and let it upload the webserver code
 12. Create a `Secrets.h` file and modify the settings accordingly. Read above for how to configure your Wi-Fi settings and other important settings.
 13. Upload the Arduino code by clicking the right-facing arrow near the top left.
-14. After that, you should be done. Plug the ESP8266 in and start configuring some web settings such as the UTC offset by going to the webserver (Default <http://LEDShelf.local> or 192.168.1.52), scrolling to the bottom, and typing in the `utcoffset` command. This is meant to be configured online since daylight savings would make updating this a hassle
+14. After that, you should be done. Plug the ESP32 in and start configuring some web settings such as the UTC offset by going to the webserver (Default <http://LEDShelf.local> or 192.168.1.52), scrolling to the bottom, and typing in the `utcoffset` command. This is meant to be configured online since daylight savings would make updating this a hassle
 
 # Wiring
 
@@ -182,7 +182,7 @@ git clone https://github.com/Winston-Lu/LED-Clock
  <img src="https://user-images.githubusercontent.com/33874247/117094177-10b17480-ad31-11eb-9f2e-6b3de03d06f2.jpg" width="600px" />
  <img src="https://user-images.githubusercontent.com/33874247/117375687-82a6cc80-ae9d-11eb-9581-abc4b28fb9d8.png" width="600px" />
 </div>
-On the ESP8266, I soldered one of the LED strip 3-pin male header onto it so I can hot-swap the module with only 1 connection needed. The red wire goes into Vin, white wire goes into G (ground), and the green wire into D8. I also have a photoresistor connected to A0 and 3v (actually 3.3v), as well as a 10k ohm resistor from A0 to G as a pull-down resistor. if you do not have this resistor, the analog readings will not be accurate.
+On the ESP32, I soldered one of the LED strip 3-pin male header onto it so I can hot-swap the module with only 1 connection needed. The red wire goes into Vin, white wire goes into G (ground), and the green wire into D8. I also have a photoresistor connected to A0 and 3v (actually 3.3v), as well as a 10k ohm resistor from A0 to G as a pull-down resistor. if you do not have this resistor, the analog readings will not be accurate.
 
 Connect 2 red wires to the 5V line on the LED strip, one connected to the 5v power supply and 1 to the LED strip female header red wire. Do the same for the black wires: 2 coming from the GND pad on the LED strip, one to GND on the power supply and 1 to the GND pin on the female LED strip connector. For data, we only need 1 wire coming from the LED strip data line into the female connector (usually in the middle). Once you get that setup, you should be able to hotswap the module in case you want to do any testing and don't want to setup Arduino OTA uploads. If you don't want to hotswap, you can just solder directly onto the board's VIN, GND, and D8
 
@@ -204,7 +204,7 @@ Connect 2 red wires to the 5V line on the LED strip, one connected to the 5v pow
 * A handful of wire, preferably of red, black, +1 other color. Buying a set from Amazon will be more than enough
 * A soldering iron and some solder
 * A LED power supply (Recommended >40w power supply). The LED's are 5v, so I would go with a 5v power supply. If you go with a 12v, you must use 12v LEDs or you must step down to 5v using a step-down buck converter
-* An ESP8266. You can get these on Amazon or Aliexpress.
+* An ESP32. You can get these on Amazon or Aliexpress.
 * 5m 60 LEDs/m Addressable RGB LED strip. You can go with a 30 LED/m strip, but you will have some dark spots, or you can go with 144 LED/m with a 2.4x increase in power usage for the tradeoff of having really bright lights such that it will probably shine through the shelf walls.
 * A computer to upload code with a micro USB cable
 * Hot glue gun and/or adhesives
@@ -231,7 +231,7 @@ discussions tab
 
 All effect rendering is done in the `Lighting.cpp` file, usually in the `showLightingEffects()` function near the top.
 
-All effects use a single buffer layer that FastLED requires before pushing the data to the display. That means all effects are rendered ontop of one another in the same layer, so any segment color data that gets rendered under another effect (EG clock) will be lost. This isn't a big deal, as I calculate the color of each effect manually each frame, which isn't the most efficient but the ESP8266 is fast enough to handle it at ~30fps. The spotlights effects get rendered first, then the background, then the clock segments. When the clock renders, it overwrites the segment colors in the background and applies the clock brightness setting on the affected segments. Clock transparency allows for the overwritten segments to mix the color between the background and foreground clock if desired.
+All effects use a single buffer layer that FastLED requires before pushing the data to the display. That means all effects are rendered ontop of one another in the same layer, so any segment color data that gets rendered under another effect (EG clock) will be lost. This isn't a big deal, as I calculate the color of each effect manually each frame, which isn't the most efficient but the ESP32 is fast enough to handle it at ~30fps. The spotlights effects get rendered first, then the background, then the clock segments. When the clock renders, it overwrites the segment colors in the background and applies the clock brightness setting on the affected segments. Clock transparency allows for the overwritten segments to mix the color between the background and foreground clock if desired.
 
 When creating a new clock effect, it is recommended to create a seperate function to calculate the LED colors per segment seperately and independently. That way you follow the previous existing code that handles switching the necessary segments.
 
