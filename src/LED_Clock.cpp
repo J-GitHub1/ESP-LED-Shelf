@@ -1,4 +1,5 @@
-#include <LittleFS.h> //for filesystem
+#include <Arduino.h> //Delete or comment out if you're going to use Arduino IDE, leave if you want you use platform.io
+#include <LittleFS.h>
 #include "Config.h"
 #include "NTPTime.h"
 #include "Lighting.h"
@@ -33,15 +34,38 @@ void setup(){
   initBacklight();
   #endif
 
-  //Website filesystem setup
-  LittleFS.begin();
-  Serial.println("LittleFS contents:");
-  Dir dir = LittleFS.openDir("/");
-  while (dir.next()) {
-    String fileName = dir.fileName();
-    size_t fileSize = dir.fileSize();
-    Serial.printf("FS File: %s, size: %s\n", fileName.c_str(), String(fileSize).c_str());
+if (!LittleFS.begin()) {
+    Serial.println("Mounting LittleFS failed");
+    return;
   }
+
+
+Serial.println("Listing directory: /");
+
+File root = LittleFS.open("/");
+  if(!root){
+    Serial.println("Failed to open directory");
+    return;
+  }
+  if(!root.isDirectory()){
+    Serial.println("Not a directory");
+    return;
+  }
+
+  File file = root.openNextFile();
+  while(file) {
+    if(file.isDirectory()){
+        Serial.print("  DIR : ");
+        Serial.println(file.name());
+    } else {
+        Serial.print("  FILE: ");
+        Serial.print(file.name());
+        Serial.print("  SIZE: ");
+        Serial.println(file.size());
+    }
+    file = root.openNextFile();
+  }
+
   Serial.printf("\n");
   //WiFi Setup
   Serial.println("Setting up Wi-Fi and NTP Connection");
@@ -58,7 +82,6 @@ void loop() {
   if (counter==FRAMES_PER_SECOND*5) frameStart = micros();
 
   //Pretty much the only 2 lines that get called aside from the last 2 FastLED calls
-  updateServer();
   showLightingEffects();
   #ifdef BACKLIGHT
   showBacklight();

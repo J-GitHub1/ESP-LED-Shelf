@@ -1169,10 +1169,10 @@ void defaultSettings(){
   backgroundPattern = 1;
   spotlightPattern = 1;
   rainbowRate = 5;
-  FRAMES_PER_SECOND = 30;
+  FRAMES_PER_SECOND = 60; // seems to work on ESP32
   hyphenLength = 0;
   hyphenColor = CRGB::Black;
-  utcOffset = 0;
+  utcOffset = 1;
   setNewOffset();
   for(int i=0 ; i<AUTOBRIGHTNESS_SAMPLES ; i++){
     lightSensorValues[i] = analogRead(LIGHT_SENSOR);
